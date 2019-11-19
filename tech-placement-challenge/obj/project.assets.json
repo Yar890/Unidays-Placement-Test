@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\tech-placement-challenge\\tech-placement-challenge.csproj",
+      "projectUniqueName": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\Unidays-Placement-Test\\tech-placement-challenge\\tech-placement-challenge.csproj",
       "projectName": "tech-placement-challenge",
-      "projectPath": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\tech-placement-challenge\\tech-placement-challenge.csproj",
+      "projectPath": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\Unidays-Placement-Test\\tech-placement-challenge\\tech-placement-challenge.csproj",
       "packagesPath": "C:\\Users\\humza\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\tech-placement-challenge\\obj\\",
+      "outputPath": "C:\\Users\\humza\\Documents\\6) Careers\\UNiDAYS\\tech-placement-challenge\\Unidays-Placement-Test\\tech-placement-challenge\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

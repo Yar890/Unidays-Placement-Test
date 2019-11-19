@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace tech_placement_challenge
 {
@@ -6,13 +7,17 @@ namespace tech_placement_challenge
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            PricingRule pricingRule = new PricingRule(); 
+
+            UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRule);
         }
     }
 
     class UnidaysDiscountChallenge
     {
-        static void UniversityDiscountChallenge()
+        public List<double> basket;
+
+        public UnidaysDiscountChallenge(PricingRule pricingRule)
         {
 
         }
@@ -23,6 +28,16 @@ namespace tech_placement_challenge
         }
 
         static void CalculateTotalPrice()
+        {
+
+        }
+    }
+
+    class PricingRule
+    {
+        public List<string> Items;
+
+        public PricingRule()
         {
 
         }

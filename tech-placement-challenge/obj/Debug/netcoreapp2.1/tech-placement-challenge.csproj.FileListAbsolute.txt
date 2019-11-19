@@ -1,0 +1,11 @@
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\bin\Debug\netcoreapp2.1\tech-placement-challenge.deps.json
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\bin\Debug\netcoreapp2.1\tech-placement-challenge.runtimeconfig.json
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\bin\Debug\netcoreapp2.1\tech-placement-challenge.runtimeconfig.dev.json
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\bin\Debug\netcoreapp2.1\tech-placement-challenge.dll
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\bin\Debug\netcoreapp2.1\tech-placement-challenge.pdb
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.csprojAssemblyReference.cache
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.csproj.CoreCompileInputs.cache
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.AssemblyInfoInputs.cache
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.AssemblyInfo.cs
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.dll
+C:\Users\humza\Documents\6) Careers\UNiDAYS\tech-placement-challenge\Unidays-Placement-Test\tech-placement-challenge\obj\Debug\netcoreapp2.1\tech-placement-challenge.pdb
