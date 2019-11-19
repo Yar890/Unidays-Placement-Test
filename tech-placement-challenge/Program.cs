@@ -9,11 +9,11 @@ namespace tech_placement_challenge
         {
             List<Item> pricingRule = new List<Item>();
 
-            pricingRule.Add(new Item("A", 8, "None"));
-            pricingRule.Add(new Item("B", 12, "2 for £20.00"));
-            pricingRule.Add(new Item("C", 4, "3 for £10.00"));
-            pricingRule.Add(new Item("D", 7, "Buy 1 get 1 free"));
-            pricingRule.Add(new Item("E", 5, "3 for the price of 2"));
+            pricingRule.Add(new PricingRule("A", 8, "None"));
+            pricingRule.Add(new PricingRule("B", 12, "2 for £20.00"));
+            pricingRule.Add(new PricingRule("C", 4, "3 for £10.00"));
+            pricingRule.Add(new PricingRule("D", 7, "Buy 1 get 1 free"));
+            pricingRule.Add(new PricingRule("E", 5, "3 for the price of 2"));
 
             //UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRule);
         }
@@ -43,14 +43,22 @@ namespace tech_placement_challenge
     {
         public string name;
         public double price;
-        public string discount;
 
-        public Item(string Name, double Price, string Discount)
+        public Item(string Name, double Price)
         {
             this.name = Name;
             this.price = Price;
-            this.discount = Discount;
         }
 
+    }
+
+    class PricingRule : Item
+    {
+        public string discount;
+
+        public PricingRule(string Name, double Price, string Discount) : base(Name, Price)
+        {
+            this.discount = Discount;
+        }
     }
 }
