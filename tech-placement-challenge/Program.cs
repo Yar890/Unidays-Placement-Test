@@ -7,8 +7,13 @@ namespace tech_placement_challenge
     {
         static void Main(string[] args)
         {
-            
-            //PricingRule pricingRule = new PricingRule(); 
+            List<Item> pricingRule = new List<Item>();
+
+            pricingRule.Add(new Item("A", 8, "None"));
+            pricingRule.Add(new Item("B", 12, "2 for £20.00"));
+            pricingRule.Add(new Item("C", 4, "3 for £10.00"));
+            pricingRule.Add(new Item("D", 7, "Buy 1 get 1 free"));
+            pricingRule.Add(new Item("E", 5, "3 for the price of 2"));
 
             //UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRule);
         }
@@ -18,7 +23,7 @@ namespace tech_placement_challenge
     {
         public List<double> basket;
 
-        public UnidaysDiscountChallenge(PricingRule pricingRule)
+        public UnidaysDiscountChallenge(List<Item> pricingRule)
         {
 
         }
@@ -34,16 +39,6 @@ namespace tech_placement_challenge
         }
     }
 
-    class PricingRule
-    {
-        public List<string> items;
-
-        public PricingRule(List<string[]> Items)
-        {
-            
-        }
-    }
-
     class Item
     {
         public string name;
@@ -56,5 +51,6 @@ namespace tech_placement_challenge
             this.price = Price;
             this.discount = Discount;
         }
+
     }
 }
