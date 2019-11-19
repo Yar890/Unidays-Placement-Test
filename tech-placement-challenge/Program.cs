@@ -7,9 +7,10 @@ namespace tech_placement_challenge
     {
         static void Main(string[] args)
         {
-            PricingRule pricingRule = new PricingRule(); 
+            
+            //PricingRule pricingRule = new PricingRule(); 
 
-            UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRule);
+            //UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRule);
         }
     }
 
@@ -35,11 +36,25 @@ namespace tech_placement_challenge
 
     class PricingRule
     {
-        public List<string> Items;
+        public List<string> items;
 
-        public PricingRule()
+        public PricingRule(List<string[]> Items)
         {
+            
+        }
+    }
 
+    class Item
+    {
+        public string name;
+        public double price;
+        public string discount;
+
+        public Item(string Name, double Price, string Discount)
+        {
+            this.name = Name;
+            this.price = Price;
+            this.discount = Discount;
         }
     }
 }
