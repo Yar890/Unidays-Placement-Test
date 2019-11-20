@@ -6,7 +6,7 @@ namespace tech_placement_challenge
 {
     class Discount
     {
-        public string name;
+        public string promotionalMessage;
 
         /// <summary>
         /// Sets up discount to contain discount name
@@ -14,7 +14,7 @@ namespace tech_placement_challenge
         /// <param name="discountName">The name of the discount deal</param>
         public Discount(string discountName)
         {
-            this.name = discountName;
+            this.promotionalMessage = discountName;
         }
     }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tech_placement_challenge
 {
-    class Basket
+    class UnidaysDiscountChallenge
     {
         private readonly Dictionary<string, Item> pricingRules;
         private Dictionary<string, int> basket;
@@ -13,7 +13,7 @@ namespace tech_placement_challenge
         /// Sets up UnidaysDiscountChallange by declaring the pricing rule and setting up a new basket
         /// </summary>
         /// <param name="PricingRules">Contains the pricing of all the items, including discount</param>
-        public Basket(Dictionary<string, Item> PricingRules)
+        public UnidaysDiscountChallenge(Dictionary<string, Item> PricingRules)
         {
             this.pricingRules = PricingRules;
             this.basket = new Dictionary<string, int>();
@@ -23,17 +23,17 @@ namespace tech_placement_challenge
         /// Adds a new item to the basket
         /// </summary>
         /// <param name="item">The item you want to place into the basket</param>
-        public void AddToBasket(string item)
+        public void AddToBasket(string itemName)
         {
             // If item is not already in basket, then add item to basket
-            if (basket.ContainsKey(item) == false)
+            if (basket.ContainsKey(itemName) == false)
             {
-                basket.Add(item, 1);
+                basket.Add(itemName, 1);
             }
             // If item is already in basket, increase value by 1
             else
             {
-                basket[item] = basket[item] + 1;
+                basket[itemName] = basket[itemName] + 1;
             }
         }
 

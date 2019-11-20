@@ -25,14 +25,14 @@ namespace tech_placement_challenge
             pricingRules.Add("E", new Item("E", 5, new BuyQuantityGetQuantityFree("Get 3 for the price of 2", 3, 1)));
 
             // Create a new basket with the pricingRules dictionary
-            Basket mainBasket = new Basket(pricingRules);
+            UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
 
             // Outputs the list of avaliable items to purchase
             Console.WriteLine("Welcome to the Unidays");
             Console.WriteLine("Below you will find a list of items that are avaliable to purchase: ");
             foreach (KeyValuePair<string, Item> item in pricingRules)
             {
-                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.name + ")"));
+                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.promotionalMessage + ")"));
             }
             Console.WriteLine();
 
