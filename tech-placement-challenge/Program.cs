@@ -10,15 +10,16 @@ namespace tech_placement_challenge
             Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
 
             pricingRules.Add("A", new PricingRule("A", 8, new Discount()));
-            pricingRules.Add("B", new PricingRule("B", 12, new QuanityForSetPrice(2, 20)));
-            pricingRules.Add("C", new PricingRule("C", 4, new QuanityForSetPrice(3, 10)));
-            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuanityGetQuanityFree(1, 1)));
+            pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice(2, 20)));
+            pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice(3, 10)));
+            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuantityGetQuantityFree(1, 1)));
             pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityForPriceOfQuantity(3, 2)));
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
 
-            example.AddToBasket("A");
-            example.AddToBasket("B");
+            example.AddToBasket("D");
+            example.AddToBasket("D");
+            example.AddToBasket("D");
 
             Dictionary<string, double> results = example.CalculateTotalPrice();
         }
@@ -58,16 +59,19 @@ namespace tech_placement_challenge
                 switch (derivedClassName)
                 {
                     case "QuantityForSetPrice":
-                        QuanityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuanityForSetPrice;
+                        QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuantityForSetPrice;
                         total = total + quanityForSetPriceDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
                         break;
-                    case "BuyQuanityGetQuanityFree":
-                        BuyQuanityGetQuanityFree buyQuanityGetQuanityFreeDiscount = pricingRules[item.Key].discount as BuyQuanityGetQuanityFree;
-                        total = total + buyQuanityGetQuanityFreeDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                    case "BuyQuantityGetQuantityFree":
+                        BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[item.Key].discount as BuyQuantityGetQuantityFree;
+                        total = total + buyQuantityGetQuantityFreeDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
                         break;
                     case "BuyQuantityForPriceOfQuantity":
                         BuyQuantityForPriceOfQuantity buyQuantityForPriceOfQuantityDiscount = pricingRules[item.Key].discount as BuyQuantityForPriceOfQuantity;
                         total = total + buyQuantityForPriceOfQuantityDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                        break;
+                    default:
+                        total = total + (item.Value * pricingRules[item.Key].price);
                         break;
                 }
             }
@@ -86,12 +90,12 @@ namespace tech_placement_challenge
 
     }
 
-    class QuanityForSetPrice : Discount
+    class QuantityForSetPrice : Discount
     {
         public int quantity;
         public int price;
 
-        public QuanityForSetPrice(int quantity, int price)
+        public QuantityForSetPrice(int quantity, int price)
         {
             this.quantity = quantity;
             this.price = price;
@@ -109,11 +113,11 @@ namespace tech_placement_challenge
         }
     }
 
-    class BuyQuanityGetQuanityFree : Discount
+    class BuyQuantityGetQuantityFree : Discount
     {
         int quantity;
         int freeQuantity;
-        public BuyQuanityGetQuanityFree(int quantity, int freeQuantity)
+        public BuyQuantityGetQuantityFree(int quantity, int freeQuantity)
         {
             this.quantity = quantity;
             this.freeQuantity = freeQuantity;
@@ -123,7 +127,13 @@ namespace tech_placement_challenge
         {
             double discountedTotal;
 
-            return 0;
+            int remainder = (itemQuantity) % (quantity + freeQuantity);
+            discountedTotal = normalPrice * remainder;
+            itemQuantity = itemQuantity - remainder;
+            double numberOfSetsOfQuanity = (itemQuantity / (quantity + freeQuantity));
+            discountedTotal = discountedTotal + (quantity * normalPrice) * numberOfSetsOfQuanity;
+
+            return discountedTotal;
         }
     }
 
