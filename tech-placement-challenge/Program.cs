@@ -11,8 +11,10 @@ namespace tech_placement_challenge
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            // Creates a dictionary containing the item name (key) and the pricing rule (value)
             Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
 
+            // Add the pricing rule of each item to PricingRules dictionary
             pricingRules.Add("A", new PricingRule("A", 8));
             pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice(2, 20)));
             pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice(3, 10)));
@@ -20,16 +22,19 @@ namespace tech_placement_challenge
             // Note: 3 for the price of 2 is the same as buy 3 get 1 free
             pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityGetQuantityFree(3, 1)));
 
-            UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
+            // Create a new basket with the pricingRules dictionary
+            UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
 
-            example.AddToBasket("A");
-            example.AddToBasket("E");
-            example.AddToBasket("E");
-            example.AddToBasket("E");
+            // Add items to basket
+            mainBasket.AddToBasket("A");
+            mainBasket.AddToBasket("E");
+            mainBasket.AddToBasket("E");
+            mainBasket.AddToBasket("E");
 
+            // Gets the total price of all items in basket, including delivery charge
+            Dictionary<string, double> results = mainBasket.CalculateTotalPrice();
 
-            Dictionary<string, double> results = example.CalculateTotalPrice();
-
+            // Outputs the total price and delivery charge
             Console.WriteLine(results["Total"]);
             Console.WriteLine(results["DeliveryCharge"]);
 
