@@ -6,14 +6,14 @@ namespace tech_placement_challenge
 {
     class UnidaysDiscountChallenge
     {
-        private Dictionary<string, PricingRule> pricingRules;
+        private readonly Dictionary<string, Item> pricingRules;
         private Dictionary<string, int> basket;
 
         /// <summary>
         /// Sets up UnidaysDiscountChallange by declaring the pricing rule and setting up a new basket
         /// </summary>
         /// <param name="PricingRules">Contains the pricing of all the items, including discount</param>
-        public UnidaysDiscountChallenge(Dictionary<string, PricingRule> PricingRules)
+        public UnidaysDiscountChallenge(Dictionary<string, Item> PricingRules)
         {
             this.pricingRules = PricingRules;
             this.basket = new Dictionary<string, int>();
@@ -67,20 +67,20 @@ namespace tech_placement_challenge
                 double itemPrice = pricingRules[itemName].price;
 
                 // If there is a discount, apply discount. Otherwise, add to total as normal price
-                if (pricingRules[item.Key].discount != null)
+                if (pricingRules[itemName].discount != null)
                 {
                     // Gets the derived class name
-                    string derivedClassName = pricingRules[item.Key].discount.GetType().UnderlyingSystemType.Name;
+                    string derivedClassName = pricingRules[itemName].discount.GetType().UnderlyingSystemType.Name;
 
                     // Converts discount to derived class name and then runs apply discount and adds it to total
                     switch (derivedClassName)
                     {
                         case "QuantityForSetPrice":
-                            QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuantityForSetPrice;
+                            QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[itemName].discount as QuantityForSetPrice;
                             total = total + quanityForSetPriceDiscount.applyDiscount(itemQuantity, itemPrice);
                             break;
                         case "BuyQuantityGetQuantityFree":
-                            BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[item.Key].discount as BuyQuantityGetQuantityFree;
+                            BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[itemName].discount as BuyQuantityGetQuantityFree;
                             total = total + buyQuantityGetQuantityFreeDiscount.applyDiscount(itemQuantity, itemPrice);
                             break;
                         default:
@@ -91,7 +91,7 @@ namespace tech_placement_challenge
                 // If there is no discount, then add quantity of items * price of item and add it to total
                 else
                 {
-                    total = total + (item.Value * pricingRules[item.Key].price);
+                    total = total + (itemQuantity * pricingRules[itemName].price);
                 }
 
             }

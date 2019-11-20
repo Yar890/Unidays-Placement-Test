@@ -14,15 +14,15 @@ namespace tech_placement_challenge
             string userInput = null;
 
             // Creates a dictionary containing the item name (key) and the pricing rule (value)
-            Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
+            Dictionary<string, Item> pricingRules = new Dictionary<string, Item>();
 
             // Add the pricing rule of each item to PricingRules dictionary
-            pricingRules.Add("A", new PricingRule("A", 8));
-            pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice("Buy 2 for £20", 2, 20)));
-            pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice("Buy 3 for £10", 3, 10)));
-            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuantityGetQuantityFree("Buy 1 get 1 free", 1, 1)));
+            pricingRules.Add("A", new Item("A", 8));
+            pricingRules.Add("B", new Item("B", 12, new QuantityForSetPrice("Buy 2 for £20", 2, 20)));
+            pricingRules.Add("C", new Item("C", 4, new QuantityForSetPrice("Buy 3 for £10", 3, 10)));
+            pricingRules.Add("D", new Item("D", 7, new BuyQuantityGetQuantityFree("Buy 1 get 1 free", 1, 1)));
             // Note: Get 3 for the price of 2 is the same as buy 3 get 1 free
-            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityGetQuantityFree("Get 3 for the price of 2", 3, 1)));
+            pricingRules.Add("E", new Item("E", 5, new BuyQuantityGetQuantityFree("Get 3 for the price of 2", 3, 1)));
 
             // Create a new basket with the pricingRules dictionary
             UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
@@ -30,7 +30,7 @@ namespace tech_placement_challenge
             // Outputs the list of avaliable items to purchase
             Console.WriteLine("Welcome to the Unidays");
             Console.WriteLine("Below you will find a list of items that are avaliable to purchase: ");
-            foreach (KeyValuePair<string, PricingRule> item in pricingRules)
+            foreach (KeyValuePair<string, Item> item in pricingRules)
             {
                 Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.name + ")"));
             }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tech_placement_challenge
 {
-    class PricingRule
+    class Item
     {
         public string item;
         public double price;
@@ -17,7 +17,7 @@ namespace tech_placement_challenge
         /// <param name="item">The item name</param>
         /// <param name="price">The normal price of the item</param>
         /// <param name="discount">The type of discount</param>
-        public PricingRule(string item, double price, Discount discount)
+        public Item(string item, double price, Discount discount)
         {
             this.item = item;
             this.price = price;
@@ -30,7 +30,7 @@ namespace tech_placement_challenge
         /// </summary>
         /// <param name="item">The item name</param>
         /// <param name="price">The normal price of the item</param>
-        public PricingRule(string item, double price)
+        public Item(string item, double price)
         {
             this.item = item;
             this.price = price;
