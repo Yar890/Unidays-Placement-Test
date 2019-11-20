@@ -9,14 +9,16 @@ namespace tech_placement_challenge
         {
             Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
 
-            pricingRules.Add("A", new PricingRule("A", 8, new Discount()));
+            pricingRules.Add("A", new PricingRule("A", 8));
             pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice(2, 20)));
             pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice(3, 10)));
             pricingRules.Add("D", new PricingRule("D", 7, new BuyQuantityGetQuantityFree(1, 1)));
-            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityForPriceOfQuantity(3, 2)));
+            // Note: 3 for the price of 2 is the same as buy 3 get 1 free
+            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityGetQuantityFree(3, 1)));
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
 
+            example.AddToBasket("A");
             example.AddToBasket("D");
             example.AddToBasket("D");
             example.AddToBasket("D");
@@ -54,26 +56,30 @@ namespace tech_placement_challenge
 
             foreach (KeyValuePair<string, int> item in basket)
             {
-                string derivedClassName = pricingRules[item.Key].discount.GetType().UnderlyingSystemType.Name;
-
-                switch (derivedClassName)
+                if (pricingRules[item.Key].discount != null)
                 {
-                    case "QuantityForSetPrice":
-                        QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuantityForSetPrice;
-                        total = total + quanityForSetPriceDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
-                        break;
-                    case "BuyQuantityGetQuantityFree":
-                        BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[item.Key].discount as BuyQuantityGetQuantityFree;
-                        total = total + buyQuantityGetQuantityFreeDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
-                        break;
-                    case "BuyQuantityForPriceOfQuantity":
-                        BuyQuantityForPriceOfQuantity buyQuantityForPriceOfQuantityDiscount = pricingRules[item.Key].discount as BuyQuantityForPriceOfQuantity;
-                        total = total + buyQuantityForPriceOfQuantityDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
-                        break;
-                    default:
-                        total = total + (item.Value * pricingRules[item.Key].price);
-                        break;
+                    string derivedClassName = pricingRules[item.Key].discount.GetType().UnderlyingSystemType.Name;
+
+                    switch (derivedClassName)
+                    {
+                        case "QuantityForSetPrice":
+                            QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuantityForSetPrice;
+                            total = total + quanityForSetPriceDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                            break;
+                        case "BuyQuantityGetQuantityFree":
+                            BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[item.Key].discount as BuyQuantityGetQuantityFree;
+                            total = total + buyQuantityGetQuantityFreeDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                            break;
+                        default:
+                            total = total + (item.Value * pricingRules[item.Key].price);
+                            break;
+                    }
                 }
+                else
+                {
+                    total = total + (item.Value * pricingRules[item.Key].price);
+                }
+                
             }
 
             
@@ -92,66 +98,48 @@ namespace tech_placement_challenge
 
     class QuantityForSetPrice : Discount
     {
-        public int quantity;
-        public int price;
+        public int purchaseQuantity;
+        public int atPrice;
 
         public QuantityForSetPrice(int quantity, int price)
         {
-            this.quantity = quantity;
-            this.price = price;
+            this.purchaseQuantity = quantity;
+            this.atPrice = price;
         }
 
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
             double discountedTotal;
 
-            int remainder = itemQuantity % quantity;
+            int remainder = itemQuantity % purchaseQuantity;
             discountedTotal = normalPrice * remainder;
             itemQuantity = itemQuantity - remainder;
-            discountedTotal = discountedTotal + ((itemQuantity / quantity) * price);
+            discountedTotal = discountedTotal + ((itemQuantity / purchaseQuantity) * atPrice);
             return discountedTotal;
         }
     }
 
     class BuyQuantityGetQuantityFree : Discount
     {
-        int quantity;
-        int freeQuantity;
+        int purchaseQuantity;
+        int getFreeQuantity;
         public BuyQuantityGetQuantityFree(int quantity, int freeQuantity)
         {
-            this.quantity = quantity;
-            this.freeQuantity = freeQuantity;
+            this.purchaseQuantity = quantity;
+            this.getFreeQuantity = freeQuantity;
         }
 
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
             double discountedTotal;
 
-            int remainder = (itemQuantity) % (quantity + freeQuantity);
+            int remainder = (itemQuantity) % (purchaseQuantity + getFreeQuantity);
             discountedTotal = normalPrice * remainder;
             itemQuantity = itemQuantity - remainder;
-            double numberOfSetsOfQuanity = (itemQuantity / (quantity + freeQuantity));
-            discountedTotal = discountedTotal + (quantity * normalPrice) * numberOfSetsOfQuanity;
+            double numberOfSetsOfQuanity = (itemQuantity / (purchaseQuantity + getFreeQuantity));
+            discountedTotal = discountedTotal + (purchaseQuantity * normalPrice) * numberOfSetsOfQuanity;
 
             return discountedTotal;
-        }
-    }
-
-    class BuyQuantityForPriceOfQuantity : Discount
-    {
-        int quantity;
-        int priceOfQuantity;
-        public BuyQuantityForPriceOfQuantity(int quantity, int priceOfQuantity)
-        {
-            this.quantity = quantity;
-            this.priceOfQuantity = priceOfQuantity;
-        }
-
-        public double applyDiscount(int itemQuantity, double normalPrice)
-        {
-            double discountedTotal;
-
-            return 0;
         }
     }
 
@@ -168,5 +156,11 @@ namespace tech_placement_challenge
             this.discount = discount;
         }
 
+        public PricingRule(string item, double price)
+        {
+            this.item = item;
+            this.price = price;
+            this.discount = null;
+        }
     }
 }
