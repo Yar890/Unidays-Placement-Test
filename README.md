@@ -9,16 +9,16 @@ The program I have made is written in C#.Net 7.0 and will be able to run on Visu
 ## Classes and Other Improvements ##
 Below, you will find a breif description of the main classes used in the program, as well as other important improvements:
 
-#### Item Class ####
+#### **Item Class** ####
 The item class is mainly used to store item information, such as item name, price and the type of discount it has. This class is mainly used for pricing rules, which is a dictionary that contains all the unique items that the shop has.
 
-#### UnidaysDiscountChallenge Class ####
+#### **UnidaysDiscountChallenge Class** ####
 This class is used to store what items are currently in the basket and the pricing rules. The class also has 3 other methods, which is AddToBasket, GetBasket and CalculateTotalPrice.
 
 ##### Storing items in basket #####
 The variable basket is a dictionary that has the item name as its key and the quantity of that item that is in the basket as its value. The reason why I have went for this approuch is the basket only needs to store essential information for the class, which is the item name (unique) and the quanitity of that item that is in the basket as an int. This allows the program to run more efficiently as instead of storing ```Basket = "AEACBCEECDDAB"```, you instead store ```Basket{["A"] = 3; ["B"] = 2, ["C"] = 2, ["D"] = 3}```. This allows CalculateTotalPrice to run more efficiently as you don't have to convert "AEACBCEECDDAB" to try to work out what the quantity of each item is.
 
-#### Discount Class ####
+#### **Discount Class** ####
 The Discount class has one variable called promotional message, which contains the message intended to advertise the discount, such as "Buy 1 get 1 free". There are also another 2 classes that inherit from the Discount class, which is "QuantityForSetPrice" and "BuyQuantityGetQuantityFree". Both of these classes also have a method called applyDiscount.
 
 ##### Discount approuch #####
