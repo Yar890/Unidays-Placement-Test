@@ -52,9 +52,7 @@ namespace tech_placement_challenge
             itemQuantity = itemQuantity - remainder;
 
             // Calculates sets of items eligable for discount by working out how many sets of items that can get discount 
-            // (EG: 4 items, Buy 2 for £10, there are 4 / 2 = 2 sets of items that can get discount). Then 
-            // times set of items by discounted price, which should get you the discounted total for items
-            // eligable for discount
+            // (EG: 4 items, Buy 2 for £10, there are 4 / 2 = 2 sets of items that can get discount).
             int setsOfItems = itemQuantity / purchaseQuantity;
 
             // Gets discounted total by getting set of items time by discounted price
