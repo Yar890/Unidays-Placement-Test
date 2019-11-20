@@ -7,13 +7,13 @@ namespace tech_placement_challenge
     {
         static void Main(string[] args)
         {
-            List<PricingRule> pricingRules = new List<PricingRule>();
+            Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
 
-            pricingRules.Add(new PricingRule("A", 8, new Discount()));
-            pricingRules.Add(new PricingRule("B", 12, new QuanityForSetPrice(2, 20)));
-            pricingRules.Add(new PricingRule("C", 4, new QuanityForSetPrice(3, 10)));
-            pricingRules.Add(new PricingRule("D", 7, new BuyQuanityGetQuanityFree(1, 1)));
-            pricingRules.Add(new PricingRule("E", 5, new BuyQuantityForPriceOfQuantity(3, 2)));
+            pricingRules.Add("A", new PricingRule("A", 8, new Discount()));
+            pricingRules.Add("B", new PricingRule("B", 12, new QuanityForSetPrice(2, 20)));
+            pricingRules.Add("C", new PricingRule("C", 4, new QuanityForSetPrice(3, 10)));
+            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuanityGetQuanityFree(1, 1)));
+            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityForPriceOfQuantity(3, 2)));
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
 
@@ -26,34 +26,46 @@ namespace tech_placement_challenge
 
     class UnidaysDiscountChallenge
     {
-        public List<PricingRule> pricingRules;
-        public List<string> basket;
+        public Dictionary<string, PricingRule> pricingRules;
+        public Dictionary<string, int> basket;
 
-        public UnidaysDiscountChallenge(List<PricingRule> PricingRules)
+        public UnidaysDiscountChallenge(Dictionary<string, PricingRule> PricingRules)
         {
             this.pricingRules = PricingRules;
-            this.basket = new List<string>();
+            this.basket = new Dictionary<string, int>();
         }
 
         public void AddToBasket(string item)
         {
-            this.basket.Add(item);
+            if (basket.ContainsKey(item) == false)
+            {
+                basket.Add(item, 1);
+            }
+            else
+            {
+                basket[item] = basket[item] + 1;
+            }
         }
 
         public Dictionary<string, double> CalculateTotalPrice()
         {
-            List<string>[] itemQuantity;
+            double total = 0;
 
-            foreach (string item in basket)
+            foreach (KeyValuePair<string, int> item in basket)
             {
-                foreach (PricingRule pricingRule in pricingRules)
-                {
-                    if (item == pricingRule.item)
-                    {
+                string derivedClassName = pricingRules[item.Key].discount.GetType().UnderlyingSystemType.Name;
 
-                    }
+                switch (derivedClassName)
+                {
+                    case "QuantityForSetPrice":
+                        QuanityForSetPrice deprivedDiscount = pricingRules[item.Key].discount as QuanityForSetPrice;
+                            total = total + deprivedDiscount.applyDiscount(item.Value);
+                        break;
                 }
             }
+
+            
+
             return null;
         }
     }
@@ -63,17 +75,29 @@ namespace tech_placement_challenge
         public Discount()
         {
         }
+
     }
 
     class QuanityForSetPrice : Discount
     {
-        int quantity;
-        int price;
+        public int quantity;
+        public int price;
 
         public QuanityForSetPrice(int quantity, int price)
         {
             this.quantity = quantity;
             this.price = price;
+        }
+
+        public double applyDiscount(int itemQuantity)
+        {
+            double cost;
+
+            double remainder = itemQuantity % quantity;
+
+            
+
+            return 0;
         }
     }
 
