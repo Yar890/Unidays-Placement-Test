@@ -5,6 +5,10 @@ namespace tech_placement_challenge
 {
     class Program
     {
+        /// <summary>
+        /// This is the first method that is ran in the program
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
@@ -18,7 +22,7 @@ namespace tech_placement_challenge
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
 
-            example.AddToBasket("E");
+            example.AddToBasket("A");
             example.AddToBasket("E");
             example.AddToBasket("E");
             example.AddToBasket("E");
@@ -38,12 +42,20 @@ namespace tech_placement_challenge
         public Dictionary<string, PricingRule> pricingRules;
         public Dictionary<string, int> basket;
 
+        /// <summary>
+        /// Sets up UnidaysDiscountChallange by declaring the pricing rule and setting up a new basket
+        /// </summary>
+        /// <param name="PricingRules">Contains the pricing of all the items, including discount</param>
         public UnidaysDiscountChallenge(Dictionary<string, PricingRule> PricingRules)
         {
             this.pricingRules = PricingRules;
             this.basket = new Dictionary<string, int>();
         }
 
+        /// <summary>
+        /// Adds a new item to the basket
+        /// </summary>
+        /// <param name="item">The item you want to place into the basket</param>
         public void AddToBasket(string item)
         {
             if (basket.ContainsKey(item) == false)
@@ -56,6 +68,11 @@ namespace tech_placement_challenge
             }
         }
 
+        /// <summary>
+        /// Calculates the total price of all items in basket, including applying discounts
+        /// and delivery charge
+        /// </summary>
+        /// <returns>Returns a dictionary with total and delivery charge</returns>
         public Dictionary<string, double> CalculateTotalPrice()
         {
             Dictionary<string, double> totalCost = new Dictionary<string, double>();
@@ -111,12 +128,24 @@ namespace tech_placement_challenge
         public int purchaseQuantity;
         public int atPrice;
 
+        /// <summary>
+        /// Sets up QuantityForSetPrice to contain the purchase quantity for the price to change to a set price.
+        /// For example: Buy 2 for £10
+        /// </summary>
+        /// <param name="quantity">The purchase quantity required for discount to apply</param>
+        /// <param name="price">The set price that the item will change to if purchase quantity has been met</param>
         public QuantityForSetPrice(int quantity, int price)
         {
             this.purchaseQuantity = quantity;
             this.atPrice = price;
         }
 
+        /// <summary>
+        /// Applies the discount to the items based on item quantity
+        /// </summary>
+        /// <param name="itemQuantity">The quantity of a specific item that is in the basket</param>
+        /// <param name="normalPrice">The normal price of the item</param>
+        /// <returns>The overall price of the items after discount has been applied</returns>
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
             double discountedTotal;
@@ -125,6 +154,7 @@ namespace tech_placement_challenge
             discountedTotal = normalPrice * remainder;
             itemQuantity = itemQuantity - remainder;
             discountedTotal = discountedTotal + ((itemQuantity / purchaseQuantity) * atPrice);
+
             return discountedTotal;
         }
     }
@@ -133,12 +163,26 @@ namespace tech_placement_challenge
     {
         int purchaseQuantity;
         int getFreeQuantity;
+
+        /// <summary>
+        /// Sets up BuyQuantityGetQuantityFree to contains the purchase quantity required for the user to recieve
+        /// a free quantity
+        /// For example: Buy 2 Get 1 Free.
+        /// </summary>
+        /// <param name="quantity">The purchase quantity required for discount to apply</param>
+        /// <param name="freeQuantity">The quantity of items that will become free if purchase quantity has been met</param>
         public BuyQuantityGetQuantityFree(int quantity, int freeQuantity)
         {
             this.purchaseQuantity = quantity;
             this.getFreeQuantity = freeQuantity;
         }
 
+        /// <summary>
+        /// Applies the discount to the items based on item quantity
+        /// </summary>
+        /// <param name="itemQuantity">The quantity of a specific item that is in the basket</param>
+        /// <param name="normalPrice">The normal price of the item</param>
+        /// <returns>The overall price of the items after discount has been applied</returns>
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
             double discountedTotal;
@@ -159,6 +203,13 @@ namespace tech_placement_challenge
         public double price;
         public Discount discount;
 
+        /// <summary>
+        /// Sets up the PricingRule of a specific item by declaring the item name, the price of item and 
+        /// the type of discount
+        /// </summary>
+        /// <param name="item">The item name</param>
+        /// <param name="price">The normal price of the item</param>
+        /// <param name="discount">The type of discount</param>
         public PricingRule(string item, double price, Discount discount)
         {
             this.item = item;
@@ -166,6 +217,12 @@ namespace tech_placement_challenge
             this.discount = discount;
         }
 
+        /// <summary>
+        /// Sets up UnidaysDiscountChallange by declaring the item, the price of item and setting discount to null
+        /// (no discount)
+        /// </summary>
+        /// <param name="item">The item name</param>
+        /// <param name="price">The normal price of the item</param>
         public PricingRule(string item, double price)
         {
             this.item = item;
