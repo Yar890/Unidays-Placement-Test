@@ -18,12 +18,18 @@ namespace tech_placement_challenge
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
 
-            example.AddToBasket("A");
-            example.AddToBasket("D");
-            example.AddToBasket("D");
-            example.AddToBasket("D");
+            example.AddToBasket("E");
+            example.AddToBasket("E");
+            example.AddToBasket("E");
+            example.AddToBasket("E");
+
 
             Dictionary<string, double> results = example.CalculateTotalPrice();
+
+            Console.WriteLine(results["Total"]);
+            Console.WriteLine(results["DeliveryCharge"]);
+
+            Console.ReadLine();
         }
     }
 
@@ -52,7 +58,9 @@ namespace tech_placement_challenge
 
         public Dictionary<string, double> CalculateTotalPrice()
         {
+            Dictionary<string, double> totalCost = new Dictionary<string, double>();
             double total = 0;
+            double deliveryCharge = 0;
 
             foreach (KeyValuePair<string, int> item in basket)
             {
@@ -82,18 +90,20 @@ namespace tech_placement_challenge
                 
             }
 
-            
+            if (total > 0 && total < 50)
+            {
+                deliveryCharge = 7;
+            }
 
-            return null;
+            totalCost.Add("Total", total);
+            totalCost.Add("DeliveryCharge", deliveryCharge);
+
+            return totalCost;
         }
     }
 
-    class Discount
+    abstract class Discount
     {
-        public Discount()
-        {
-        }
-
     }
 
     class QuantityForSetPrice : Discount
