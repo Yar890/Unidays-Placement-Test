@@ -29,21 +29,38 @@ namespace tech_placement_challenge
             Console.WriteLine("Below you will find a list of items that are avaliable to purchase: ");
             foreach (KeyValuePair<string, PricingRule> item in pricingRules)
             {
-                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.name + ")")); 
+                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.name + ")"));
             }
+            Console.WriteLine();
 
-            // Add items to basket
-            mainBasket.AddToBasket("A");
-            mainBasket.AddToBasket("E");
-            mainBasket.AddToBasket("E");
-            mainBasket.AddToBasket("E");
+            string userInput = null;
+                
+            while (userInput != "/")
+            {
+                Console.Write("Please enter the item you want to add to the basket, or type / to get total price: ");
+                userInput = Console.ReadLine();
+
+                if (pricingRules.ContainsKey(userInput) == true)
+                {
+                    mainBasket.AddToBasket(userInput);
+                    Console.WriteLine(string.Concat("Item " + userInput + " has been added to the basket."));
+                }
+                else if (userInput == "/")
+                {
+                    // Do nothing
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+            }
 
             // Gets the total price of all items in basket, including delivery charge
             Dictionary<string, double> results = mainBasket.CalculateTotalPrice();
 
             // Outputs the total price and delivery charge
-            Console.WriteLine(results["Total"]);
-            Console.WriteLine(results["DeliveryCharge"]);
+            Console.WriteLine(string.Concat("Total Price: £" + results["Total"]));
+            Console.WriteLine(string.Concat("Delivery Charge: £" + results["DeliveryCharge"]));
 
             Console.ReadLine();
         }
