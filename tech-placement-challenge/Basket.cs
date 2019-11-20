@@ -4,7 +4,7 @@ using System.Text;
 
 namespace tech_placement_challenge
 {
-    class UnidaysDiscountChallenge
+    class Basket
     {
         private readonly Dictionary<string, Item> pricingRules;
         private Dictionary<string, int> basket;
@@ -13,7 +13,7 @@ namespace tech_placement_challenge
         /// Sets up UnidaysDiscountChallange by declaring the pricing rule and setting up a new basket
         /// </summary>
         /// <param name="PricingRules">Contains the pricing of all the items, including discount</param>
-        public UnidaysDiscountChallenge(Dictionary<string, Item> PricingRules)
+        public Basket(Dictionary<string, Item> PricingRules)
         {
             this.pricingRules = PricingRules;
             this.basket = new Dictionary<string, int>();
