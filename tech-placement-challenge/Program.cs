@@ -189,6 +189,10 @@ namespace tech_placement_challenge
     {
         public string name;
 
+        /// <summary>
+        /// Sets up discount to contain discount name
+        /// </summary>
+        /// <param name="discountName">The name of the discount deal</param>
         public Discount(string discountName)
         {
             this.name = discountName;
@@ -220,12 +224,23 @@ namespace tech_placement_challenge
         /// <returns>The overall price of the items after discount has been applied</returns>
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
+            // Initialise variables
             double discountedTotal;
 
+            // Get the remainder that won't be part of discount (EG: 3 items, Buy 2 for £10 deal, the third item won't get discount)
             int remainder = itemQuantity % purchaseQuantity;
             discountedTotal = normalPrice * remainder;
             itemQuantity = itemQuantity - remainder;
-            discountedTotal = discountedTotal + ((itemQuantity / purchaseQuantity) * atPrice);
+
+            // Calculates sets of items eligable for discount by working out how many sets of items that can get discount 
+            // (EG: 4 items, Buy 2 for £10, there are 4 / 2 = 2 sets of items that can get discount). Then 
+            // times set of items by discounted price, which should get you the discounted total for items
+            // eligable for discount
+            int setsOfItems = itemQuantity / purchaseQuantity;
+
+            // Gets discounted total by getting set of items time by discounted price
+            // EG: 4 Items (cost £2), Buy 2 for £3, they are 2 * 3 = 6 pounds 
+            discountedTotal = discountedTotal + (setsOfItems * atPrice);
 
             return discountedTotal;
         }
@@ -257,13 +272,21 @@ namespace tech_placement_challenge
         /// <returns>The overall price of the items after discount has been applied</returns>
         public double applyDiscount(int itemQuantity, double normalPrice)
         {
+            // Initialise variables
             double discountedTotal;
 
+            // Get the remainder that won't be part of discount (EG: 5 items, Buy 2 get 2 free, the fifth item won't get discount)
             int remainder = (itemQuantity) % (purchaseQuantity + getFreeQuantity);
             discountedTotal = normalPrice * remainder;
             itemQuantity = itemQuantity - remainder;
-            double numberOfSetsOfQuanity = (itemQuantity / (purchaseQuantity + getFreeQuantity));
-            discountedTotal = discountedTotal + (purchaseQuantity * normalPrice) * numberOfSetsOfQuanity;
+
+            // Calculates sets of items eligable for discount by working out how many sets of items that can get discount 
+            // (EG:8 items, Buy 2 get 2 free, there are 4 / (2 + 2) = 2 sets of items that can get discount).
+            double setsOfItems = (itemQuantity / (purchaseQuantity + getFreeQuantity));
+
+            // Gets discounted total by getting purchase quanity times by normal price, and then times by set of Items
+            // EG: 8 Items (cost £1), Buy 2 get 2 free, they are (2 * 1) * 2 = 4 pounds
+            discountedTotal = discountedTotal + (purchaseQuantity * normalPrice) * setsOfItems;
 
             return discountedTotal;
         }
