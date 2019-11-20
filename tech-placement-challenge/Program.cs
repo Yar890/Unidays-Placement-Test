@@ -16,11 +16,11 @@ namespace tech_placement_challenge
 
             // Add the pricing rule of each item to PricingRules dictionary
             pricingRules.Add("A", new PricingRule("A", 8));
-            pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice(2, 20)));
-            pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice(3, 10)));
-            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuantityGetQuantityFree(1, 1)));
-            // Note: 3 for the price of 2 is the same as buy 3 get 1 free
-            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityGetQuantityFree(3, 1)));
+            pricingRules.Add("B", new PricingRule("B", 12, new QuantityForSetPrice("Buy 2 for £20", 2, 20)));
+            pricingRules.Add("C", new PricingRule("C", 4, new QuantityForSetPrice("Buy 3 for £10", 3, 10)));
+            pricingRules.Add("D", new PricingRule("D", 7, new BuyQuantityGetQuantityFree("Buy 1 get 1 free", 1, 1)));
+            // Note: Get 3 for the price of 2 is the same as buy 3 get 1 free
+            pricingRules.Add("E", new PricingRule("E", 5, new BuyQuantityGetQuantityFree("Get 3 for the price of 2", 3, 1)));
 
             // Create a new basket with the pricingRules dictionary
             UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
@@ -29,7 +29,7 @@ namespace tech_placement_challenge
             Console.WriteLine("Below you will find a list of items that are avaliable to purchase: ");
             foreach (KeyValuePair<string, PricingRule> item in pricingRules)
             {
-                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString()));
+                Console.WriteLine(string.Concat(item.Value.item, ": £", item.Value.price.ToString(), " (" + item.Value.discount.name + ")")); 
             }
 
             // Add items to basket
@@ -131,8 +131,14 @@ namespace tech_placement_challenge
         }
     }
 
-    abstract class Discount
+    class Discount
     {
+        public string name;
+
+        public Discount(string discountName)
+        {
+            this.name = discountName;
+        }
     }
 
     class QuantityForSetPrice : Discount
@@ -146,7 +152,7 @@ namespace tech_placement_challenge
         /// </summary>
         /// <param name="quantity">The purchase quantity required for discount to apply</param>
         /// <param name="price">The set price that the item will change to if purchase quantity has been met</param>
-        public QuantityForSetPrice(int quantity, int price)
+        public QuantityForSetPrice(string discountName, int quantity, int price) : base(discountName)
         {
             this.purchaseQuantity = quantity;
             this.atPrice = price;
@@ -183,7 +189,7 @@ namespace tech_placement_challenge
         /// </summary>
         /// <param name="quantity">The purchase quantity required for discount to apply</param>
         /// <param name="freeQuantity">The quantity of items that will become free if purchase quantity has been met</param>
-        public BuyQuantityGetQuantityFree(int quantity, int freeQuantity)
+        public BuyQuantityGetQuantityFree(string discountName, int quantity, int freeQuantity) : base(discountName)
         {
             this.purchaseQuantity = quantity;
             this.getFreeQuantity = freeQuantity;
@@ -239,7 +245,7 @@ namespace tech_placement_challenge
         {
             this.item = item;
             this.price = price;
-            this.discount = null;
+            this.discount = new Discount("No Discount");
         }
     }
 }
