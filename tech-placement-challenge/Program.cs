@@ -9,13 +9,18 @@ namespace tech_placement_challenge
         {
             List<PricingRule> pricingRules = new List<PricingRule>();
 
-            pricingRules.Add(new PricingRule("A", 8, "None"));
-            pricingRules.Add(new PricingRule("B", 12, "2 for £20.00"));
-            pricingRules.Add(new PricingRule("C", 4, "3 for £10.00"));
-            pricingRules.Add(new PricingRule("D", 7, "Buy 1 get 1 free"));
-            pricingRules.Add(new PricingRule("E", 5, "3 for the price of 2"));
+            pricingRules.Add(new PricingRule("A", 8, new Discount()));
+            pricingRules.Add(new PricingRule("B", 12, new QuanityForSetPrice(2, 20)));
+            pricingRules.Add(new PricingRule("C", 4, new QuanityForSetPrice(3, 10)));
+            pricingRules.Add(new PricingRule("D", 7, new BuyQuanityGetQuanityFree(1, 1)));
+            pricingRules.Add(new PricingRule("E", 5, new BuyQuantityForPriceOfQuantity(3, 2)));
 
             UnidaysDiscountChallenge example = new UnidaysDiscountChallenge(pricingRules);
+
+            example.AddToBasket("A");
+            example.AddToBasket("B");
+
+            Dictionary<string, double> results = example.CalculateTotalPrice();
         }
     }
 
@@ -27,32 +32,84 @@ namespace tech_placement_challenge
         public UnidaysDiscountChallenge(List<PricingRule> PricingRules)
         {
             this.pricingRules = PricingRules;
+            this.basket = new List<string>();
         }
 
-        static void AddToBasket(string item)
+        public void AddToBasket(string item)
         {
-            
+            this.basket.Add(item);
         }
 
-        static void CalculateTotalPrice()
+        public Dictionary<string, double> CalculateTotalPrice()
         {
+            List<string>[] itemQuantity;
 
+            foreach (string item in basket)
+            {
+                foreach (PricingRule pricingRule in pricingRules)
+                {
+                    if (item == pricingRule.item)
+                    {
+
+                    }
+                }
+            }
+            return null;
         }
+    }
 
-        
+    class Discount
+    {
+        public Discount()
+        {
+        }
+    }
+
+    class QuanityForSetPrice : Discount
+    {
+        int quantity;
+        int price;
+
+        public QuanityForSetPrice(int quantity, int price)
+        {
+            this.quantity = quantity;
+            this.price = price;
+        }
+    }
+
+    class BuyQuanityGetQuanityFree : Discount
+    {
+        int quantity;
+        int freeQuantity;
+        public BuyQuanityGetQuanityFree(int quantity, int freeQuantity)
+        {
+            this.quantity = quantity;
+            this.freeQuantity = freeQuantity;
+        }
+    }
+
+    class BuyQuantityForPriceOfQuantity : Discount
+    {
+        int quantity;
+        int priceOfQuantity;
+        public BuyQuantityForPriceOfQuantity(int quantity, int priceOfQuantity)
+        {
+            this.quantity = quantity;
+            this.priceOfQuantity = priceOfQuantity;
+        }
     }
 
     class PricingRule
     {
         public string item;
         public double price;
-        public string discount;
+        public Discount discount;
 
-        public PricingRule(string Item, double Price, string Discount)
+        public PricingRule(string item, double price, Discount discount)
         {
-            this.item = Item;
-            this.price = Price;
-            this.discount = Discount;
+            this.item = item;
+            this.price = price;
+            this.discount = discount;
         }
 
     }
