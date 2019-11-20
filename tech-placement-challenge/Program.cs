@@ -58,8 +58,16 @@ namespace tech_placement_challenge
                 switch (derivedClassName)
                 {
                     case "QuantityForSetPrice":
-                        QuanityForSetPrice deprivedDiscount = pricingRules[item.Key].discount as QuanityForSetPrice;
-                            total = total + deprivedDiscount.applyDiscount(item.Value);
+                        QuanityForSetPrice quanityForSetPriceDiscount = pricingRules[item.Key].discount as QuanityForSetPrice;
+                        total = total + quanityForSetPriceDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                        break;
+                    case "BuyQuanityGetQuanityFree":
+                        BuyQuanityGetQuanityFree buyQuanityGetQuanityFreeDiscount = pricingRules[item.Key].discount as BuyQuanityGetQuanityFree;
+                        total = total + buyQuanityGetQuanityFreeDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
+                        break;
+                    case "BuyQuantityForPriceOfQuantity":
+                        BuyQuantityForPriceOfQuantity buyQuantityForPriceOfQuantityDiscount = pricingRules[item.Key].discount as BuyQuantityForPriceOfQuantity;
+                        total = total + buyQuantityForPriceOfQuantityDiscount.applyDiscount(item.Value, pricingRules[item.Key].price);
                         break;
                 }
             }
@@ -89,15 +97,15 @@ namespace tech_placement_challenge
             this.price = price;
         }
 
-        public double applyDiscount(int itemQuantity)
+        public double applyDiscount(int itemQuantity, double normalPrice)
         {
-            double cost;
+            double discountedTotal;
 
-            double remainder = itemQuantity % quantity;
-
-            
-
-            return 0;
+            int remainder = itemQuantity % quantity;
+            discountedTotal = normalPrice * remainder;
+            itemQuantity = itemQuantity - remainder;
+            discountedTotal = discountedTotal + ((itemQuantity / quantity) * price);
+            return discountedTotal;
         }
     }
 
@@ -110,6 +118,13 @@ namespace tech_placement_challenge
             this.quantity = quantity;
             this.freeQuantity = freeQuantity;
         }
+
+        public double applyDiscount(int itemQuantity, double normalPrice)
+        {
+            double discountedTotal;
+
+            return 0;
+        }
     }
 
     class BuyQuantityForPriceOfQuantity : Discount
@@ -120,6 +135,13 @@ namespace tech_placement_challenge
         {
             this.quantity = quantity;
             this.priceOfQuantity = priceOfQuantity;
+        }
+
+        public double applyDiscount(int itemQuantity, double normalPrice)
+        {
+            double discountedTotal;
+
+            return 0;
         }
     }
 
