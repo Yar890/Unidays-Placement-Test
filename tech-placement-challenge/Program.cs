@@ -34,16 +34,23 @@ namespace tech_placement_challenge
             Console.WriteLine();
 
             string userInput = null;
-                
+
             while (userInput != "/")
             {
                 Console.Write("Please enter the item you want to add to the basket, or type / to get total price: ");
-                userInput = Console.ReadLine();
+                userInput = Console.ReadLine().ToUpper();
 
                 if (pricingRules.ContainsKey(userInput) == true)
                 {
                     mainBasket.AddToBasket(userInput);
                     Console.WriteLine(string.Concat("Item " + userInput + " has been added to the basket."));
+                    Console.WriteLine();
+                    Console.WriteLine("Current Basket: ");
+                    foreach (KeyValuePair<string, int> item in mainBasket.basket)
+                    {
+                        Console.WriteLine(string.Concat(item.Key, ": ", item.Value));
+                    }
+                    Console.WriteLine();
                 }
                 else if (userInput == "/")
                 {
@@ -55,12 +62,15 @@ namespace tech_placement_challenge
                 }
             }
 
+            Console.WriteLine();
+
             // Gets the total price of all items in basket, including delivery charge
             Dictionary<string, double> results = mainBasket.CalculateTotalPrice();
 
             // Outputs the total price and delivery charge
-            Console.WriteLine(string.Concat("Total Price: £" + results["Total"]));
-            Console.WriteLine(string.Concat("Delivery Charge: £" + results["DeliveryCharge"]));
+            Console.WriteLine(string.Concat("Total Price: £", results["Total"]));
+            Console.WriteLine(string.Concat("Delivery Charge: £", results["DeliveryCharge"]));
+            Console.WriteLine(string.Concat("Overall Total: £", (results["Total"] + results["DeliveryCharge"])));
 
             Console.ReadLine();
         }
