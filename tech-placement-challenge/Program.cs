@@ -11,6 +11,8 @@ namespace tech_placement_challenge
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            string userInput = null;
+
             // Creates a dictionary containing the item name (key) and the pricing rule (value)
             Dictionary<string, PricingRule> pricingRules = new Dictionary<string, PricingRule>();
 
@@ -25,6 +27,7 @@ namespace tech_placement_challenge
             // Create a new basket with the pricingRules dictionary
             UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
 
+            // Outputs the list of avaliable items to purchase
             Console.WriteLine("Welcome to the Unidays");
             Console.WriteLine("Below you will find a list of items that are avaliable to purchase: ");
             foreach (KeyValuePair<string, PricingRule> item in pricingRules)
@@ -33,35 +36,39 @@ namespace tech_placement_challenge
             }
             Console.WriteLine();
 
-            string userInput = null;
-
+            // A while loop that runs until user wants to get total price
             while (userInput != "/")
             {
+                // Get user input and convert user input to upper caps
                 Console.Write("Please enter the item you want to add to the basket, or type / to get total price: ");
                 userInput = Console.ReadLine().ToUpper();
 
+                // If user input is a valid item, then added item to basket
                 if (pricingRules.ContainsKey(userInput) == true)
                 {
                     mainBasket.AddToBasket(userInput);
                     Console.WriteLine(string.Concat("Item " + userInput + " has been added to the basket."));
                     Console.WriteLine();
+                    
+                    // Outputs current basket 
                     Console.WriteLine("Current Basket: ");
-                    foreach (KeyValuePair<string, int> item in mainBasket.basket)
+                    foreach (KeyValuePair<string, int> item in mainBasket.GetBasket())
                     {
                         Console.WriteLine(string.Concat(item.Key, ": ", item.Value));
                     }
                     Console.WriteLine();
                 }
+                // If user input is /, exit while loop
                 else if (userInput == "/")
                 {
-                    // Do nothing
+                    break;
                 }
+                // Invalid input detected, let user know that they entered an invalid input
                 else
                 {
                     Console.WriteLine("Invalid input.");
                 }
             }
-
             Console.WriteLine();
 
             // Gets the total price of all items in basket, including delivery charge
@@ -78,8 +85,8 @@ namespace tech_placement_challenge
 
     class UnidaysDiscountChallenge
     {
-        public Dictionary<string, PricingRule> pricingRules;
-        public Dictionary<string, int> basket;
+        private Dictionary<string, PricingRule> pricingRules;
+        private Dictionary<string, int> basket;
 
         /// <summary>
         /// Sets up UnidaysDiscountChallange by declaring the pricing rule and setting up a new basket
@@ -105,6 +112,11 @@ namespace tech_placement_challenge
             {
                 basket[item] = basket[item] + 1;
             }
+        }
+
+        public Dictionary<string, int> GetBasket()
+        {
+            return basket;
         }
 
         /// <summary>
