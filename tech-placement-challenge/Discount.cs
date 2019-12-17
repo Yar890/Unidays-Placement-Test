@@ -16,23 +16,70 @@ namespace tech_placement_challenge
         {
             this.promotionalMessage = discountName;
         }
+
+        /// <summary>
+        /// Applies the discount
+        /// </summary>
+        /// <param name="itemQuantity">The item quantity in basket</param>
+        /// <param name="normalPrice">The normal price of the item</param>
+        /// <returns>Discounted total price of items</returns>
+        public virtual double ApplyDiscount(int itemQuantity, double normalPrice)
+        {
+            return itemQuantity * normalPrice;
+        }
+
+        /// <summary>
+        /// Gets the set of items based on item quantity
+        /// </summary>
+        /// <param name="itemsPerSet">Number of items in each set</param>
+        /// <param name="ItemQuantity">Number of overall items</param>
+        /// <returns>Set of items</returns>
+        internal int GetSetsOfItems(int itemsPerSet, int ItemQuantity)
+        {
+            return ItemQuantity / itemsPerSet;
+        }
+
+        /// <summary>
+        /// Gets the quantity of items that are not on offer
+        /// </summary>
+        /// <param name="itemQuantity">Number of overall items</param>
+        /// <param name="offerQuantity">Number of items that is on offer</param>
+        /// <returns>Items that are on offer</returns>
+        internal int GetItemQuantityOnOffer(int itemQuantity, int offerQuantity)
+        {
+            int itemsNotOnOffer = itemQuantity % offerQuantity;
+            return itemQuantity - itemsNotOnOffer;
+        }
+
+        /// <summary>
+        /// Calculates the price of items at a set price
+        /// </summary>
+        /// <param name="price">The cost of an item</param>
+        /// <param name="itemQuantity">Number of overall items</param>
+        /// <returns>Price of items based on quantity</returns>
+        internal double GetPriceAtQuantity(double price, int itemQuantity)
+        {
+            return itemQuantity * price;
+        }
     }
+
+
 
     class QuantityForSetPrice : Discount
     {
-        public int purchaseQuantity;
-        public int atPrice;
+        public int offerQuantity;
+        public int discountPrice;
 
         /// <summary>
-        /// Sets up QuantityForSetPrice to contain the purchase quantity for the price to change to a set price.
-        /// For example: Buy 2 for £10
+        /// Sets up QuantityForSetPrice discount
         /// </summary>
-        /// <param name="quantity">The purchase quantity required for discount to apply</param>
-        /// <param name="price">The set price that the item will change to if purchase quantity has been met</param>
+        /// <param name="discountName">The name of the discount deal</param>
+        /// <param name="quantity">The offer quantity</param>
+        /// <param name="price">The price for the offer quantity</param>
         public QuantityForSetPrice(string discountName, int quantity, int price) : base(discountName)
         {
-            this.purchaseQuantity = quantity;
-            this.atPrice = price;
+            this.offerQuantity = quantity;
+            this.discountPrice = price;
         }
 
         /// <summary>
@@ -41,44 +88,48 @@ namespace tech_placement_challenge
         /// <param name="itemQuantity">The quantity of a specific item that is in the basket</param>
         /// <param name="normalPrice">The normal price of the item</param>
         /// <returns>The overall price of the items after discount has been applied</returns>
-        public double applyDiscount(int itemQuantity, double normalPrice)
+        override public double ApplyDiscount(int itemQuantity, double normalPrice)
         {
             // Initialise variables
             double discountedTotal;
+            int itemQuantityOnOffer;
+            int itemQuantityNotOnOffer;
 
-            // Get the remainder that won't be part of discount (EG: 3 items, Buy 2 for £10 deal, the third item won't get discount)
-            int remainder = itemQuantity % purchaseQuantity;
-            discountedTotal = normalPrice * remainder;
-            itemQuantity = itemQuantity - remainder;
+            // Gets items that are on offer and items that are not on offer
+            // (EG: 3 items, Buy 2 for £10 deal, the third item is not on offer)
+            itemQuantityOnOffer = GetItemQuantityOnOffer(itemQuantity, offerQuantity);
+            itemQuantityNotOnOffer = itemQuantity - itemQuantityOnOffer;
 
-            // Calculates sets of items eligable for discount by working out how many sets of items that can get discount 
-            // (EG: 4 items, Buy 2 for £10, there are 4 / 2 = 2 sets of items that can get discount).
-            int setsOfItems = itemQuantity / purchaseQuantity;
+            // Calculates the number of sets of items based on item quantity that is on offer
+            // (EG: 4 items, Buy 2 for £10, there are 4 / 2 = 2 sets of items that are on offer)
+            int setsOfItems = GetSetsOfItems(offerQuantity, itemQuantityOnOffer);
 
-            // Gets discounted total by getting set of items time by discounted price
-            // EG: 4 Items (cost £2), Buy 2 for £3, they are 2 * 3 = 6 pounds 
-            discountedTotal = discountedTotal + (setsOfItems * atPrice);
+            // Calculates price of items on offer
+            discountedTotal = GetPriceAtQuantity(discountPrice, setsOfItems);
+            // Calculates price of items not on offer and adds it to discountedTotal
+            discountedTotal = discountedTotal + GetPriceAtQuantity(normalPrice, itemQuantityNotOnOffer);
 
             return discountedTotal;
         }
     }
 
-    class BuyQuantityGetQuantityFree : Discount
+
+
+    class BuyQuantityForPriceOfQuantity : Discount
     {
-        int purchaseQuantity;
-        int getFreeQuantity;
+        int offerQuantity;
+        int priceOfQuantity;
 
         /// <summary>
-        /// Sets up BuyQuantityGetQuantityFree to contains the purchase quantity required for the user to recieve
-        /// a free quantity
-        /// For example: Buy 2 Get 1 Free.
+        /// Sets up BuyQuantityForPriceOfQuantity discount
         /// </summary>
-        /// <param name="quantity">The purchase quantity required for discount to apply</param>
-        /// <param name="freeQuantity">The quantity of items that will become free if purchase quantity has been met</param>
-        public BuyQuantityGetQuantityFree(string discountName, int quantity, int freeQuantity) : base(discountName)
+        /// <param name="discountName">The name of the discount deal</param>
+        /// <param name="offerQuantity">The offer quantity</param>
+        /// <param name="priceOfQuantity">For the price of quantity</param>
+        public BuyQuantityForPriceOfQuantity(string discountName, int offerQuantity, int priceOfQuantity) : base(discountName)
         {
-            this.purchaseQuantity = quantity;
-            this.getFreeQuantity = freeQuantity;
+            this.offerQuantity = offerQuantity;
+            this.priceOfQuantity = priceOfQuantity;
         }
 
         /// <summary>
@@ -87,23 +138,29 @@ namespace tech_placement_challenge
         /// <param name="itemQuantity">The quantity of a specific item that is in the basket</param>
         /// <param name="normalPrice">The normal price of the item</param>
         /// <returns>The overall price of the items after discount has been applied</returns>
-        public double applyDiscount(int itemQuantity, double normalPrice)
+        public override double ApplyDiscount(int itemQuantity, double normalPrice)
         {
             // Initialise variables
             double discountedTotal;
+            int itemQuantityOnOffer;
+            int itemQuantityNotOnOffer;
+            double discountPrice;
 
-            // Get the remainder that won't be part of discount (EG: 5 items, Buy 2 get 2 free, the fifth item won't get discount)
-            int remainder = (itemQuantity) % (purchaseQuantity + getFreeQuantity);
-            discountedTotal = normalPrice * remainder;
-            itemQuantity = itemQuantity - remainder;
+            // Gets items that are on offer and items that are not on offer
+            // (EG: 3 items, Buy 2 for price of 1, the third item is not on offer)
+            itemQuantityOnOffer = GetItemQuantityOnOffer(itemQuantity, offerQuantity);
+            itemQuantityNotOnOffer = itemQuantity - itemQuantityOnOffer;
 
-            // Calculates sets of items eligable for discount by working out how many sets of items that can get discount 
-            // (EG:8 items, Buy 2 get 2 free, there are 4 / (2 + 2) = 2 sets of items that can get discount).
-            double setsOfItems = (itemQuantity / (purchaseQuantity + getFreeQuantity));
+            // Calculates the number of sets of items based on item quantity that is on offer
+            // (EG: 4 items, Buy 2 for price of 1, there are 4 / 2 = 2 sets of items that are on offer)
+            int setsOfItems = GetSetsOfItems(offerQuantity, itemQuantityOnOffer);
 
-            // Gets discounted total by getting purchase quanity times by normal price, and then times by set of Items
-            // EG: 8 Items (cost £1), Buy 2 get 2 free, they are (2 * 1) * 2 = 4 pounds
-            discountedTotal = discountedTotal + (purchaseQuantity * normalPrice) * setsOfItems;
+            // Gets discount price of 1 set of items
+            discountPrice = priceOfQuantity * normalPrice;
+            // Calculates price of items on offer
+            discountedTotal = GetPriceAtQuantity(discountPrice, setsOfItems);
+            // Calculates price of items not on offer and adds it to discountedTotal
+            discountedTotal = discountedTotal + GetPriceAtQuantity(normalPrice, itemQuantityNotOnOffer);
 
             return discountedTotal;
         }

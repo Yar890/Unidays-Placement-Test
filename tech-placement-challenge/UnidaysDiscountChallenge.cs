@@ -69,31 +69,15 @@ namespace tech_placement_challenge
                 // If there is a discount, apply discount. Otherwise, add to total as normal price
                 if (pricingRules[itemName].discount != null)
                 {
-                    // Gets the derived class name
-                    string derivedClassName = pricingRules[itemName].discount.GetType().UnderlyingSystemType.Name;
-
-                    // Converts discount to derived class name and then runs apply discount and adds it to total
-                    switch (derivedClassName)
-                    {
-                        case "QuantityForSetPrice":
-                            QuantityForSetPrice quanityForSetPriceDiscount = pricingRules[itemName].discount as QuantityForSetPrice;
-                            total = total + quanityForSetPriceDiscount.applyDiscount(itemQuantity, itemPrice);
-                            break;
-                        case "BuyQuantityGetQuantityFree":
-                            BuyQuantityGetQuantityFree buyQuantityGetQuantityFreeDiscount = pricingRules[itemName].discount as BuyQuantityGetQuantityFree;
-                            total = total + buyQuantityGetQuantityFreeDiscount.applyDiscount(itemQuantity, itemPrice);
-                            break;
-                        default:
-                            total = total + (itemQuantity * itemPrice);
-                            break;
-                    }
+                    // Gets discount and applied discoutn and then gets the total.
+                    Discount discount = pricingRules[itemName].discount;
+                    total = total + discount.ApplyDiscount(itemQuantity, itemPrice);
                 }
                 // If there is no discount, then add quantity of items * price of item and add it to total
                 else
                 {
                     total = total + (itemQuantity * pricingRules[itemName].price);
                 }
-
             }
 
             // Sets delivery charge if total is above 0 and under 50

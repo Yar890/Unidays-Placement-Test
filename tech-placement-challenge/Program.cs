@@ -16,13 +16,18 @@ namespace tech_placement_challenge
             // Creates a dictionary containing the item name (key) and the pricing rule (value)
             Dictionary<string, Item> pricingRules = new Dictionary<string, Item>();
 
+            // Creates discount type
+            Discount buy2For20 = new QuantityForSetPrice("Buy 2 for £20", 2, 20);
+            Discount buy3For10 = new QuantityForSetPrice("Buy 3 for £10", 3, 10);
+            Discount get1buy1free = new BuyQuantityForPriceOfQuantity("Buy 1 get 1 free", 2, 1);
+            Discount buy3ForPriceof2 = new BuyQuantityForPriceOfQuantity("Get 3 for the price of 2", 3, 2);
+
             // Add the pricing rule of each item to PricingRules dictionary
             pricingRules.Add("A", new Item("A", 8));
-            pricingRules.Add("B", new Item("B", 12, new QuantityForSetPrice("Buy 2 for £20", 2, 20)));
-            pricingRules.Add("C", new Item("C", 4, new QuantityForSetPrice("Buy 3 for £10", 3, 10)));
-            pricingRules.Add("D", new Item("D", 7, new BuyQuantityGetQuantityFree("Buy 1 get 1 free", 1, 1)));
-            // Note: Get 3 for the price of 2 is the same as buy 3 get 1 free
-            pricingRules.Add("E", new Item("E", 5, new BuyQuantityGetQuantityFree("Get 3 for the price of 2", 3, 1)));
+            pricingRules.Add("B", new Item("B", 12, buy2For20));
+            pricingRules.Add("C", new Item("C", 4, buy3For10));
+            pricingRules.Add("D", new Item("D", 7, get1buy1free));
+            pricingRules.Add("E", new Item("E", 5, buy3ForPriceof2));
 
             // Create a new basket with the pricingRules dictionary
             UnidaysDiscountChallenge mainBasket = new UnidaysDiscountChallenge(pricingRules);
