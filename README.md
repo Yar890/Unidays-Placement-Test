@@ -4,7 +4,7 @@ The program I have made is written in C#.Net 7.0 and will be able to run on Visu
 ## Approach to the problem ##
 The first step I did was note down all the requirements that the program needs to meet. Next, I look through the requirements and start thinking about what classes and methods I will need and how I will store variables, such as what data type to use and if I should use an array, list or dictionary. I also try to look for some similarities between the requirements, which can help with identifying ways of improving the efficiency of the program. I then created a new project and add it to this repository, while making sure that I commit after each change. I then start going through the requirements list and working on one requirement at a time. While programming, if I identify another potential way of improving the program, I send a new commit and start working the new idea I have to improve the program. If the code starts to run into issues due to a major change, I can always revert to a previous commit.
 
-On large scale or team projects, I would also create further design documentation such as user interface designs, top-down design, UML diagram and flowcharts, so that the me as well as the team can understand what tasks needs to be completed.
+On large scale or team projects, I would also create further design documentation such as user interface designs, top-down design, UML diagram and flowcharts, so that I as well as the team can understand what tasks needs to be completed.
 
 ## Classes and Other Improvements ##
 Below, you will find a brief description of the main classes used in the program, as well as other important improvements:
